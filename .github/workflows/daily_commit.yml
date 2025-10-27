@@ -1,46 +1,33 @@
-name: Daily Commit Workflow
+# MODIFICATION: Email is now in the top-level workflow name
+name: Daily Commit Workflow - 23f3000343@ds.study.iitm.ac.in
 
-# 1. Triggers
 on:
-  # This allows you to run the action manually from the "Actions" tab
   workflow_dispatch:
-
-  # This schedules the action to run once per day at 5:30 UTC
-  # This uses specific minutes (30) and hours (5) as required
   schedule:
     - cron: '30 5 * * *'
 
-# 2. Permissions
-# This is ESSENTIAL to allow the action to write a commit back to your repo
 permissions:
   contents: write
 
-# 3. Jobs
 jobs:
   auto-commit-job:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Check out the current code in the repository
       - name: Check out repository
         uses: actions/checkout@v4
 
-      # Step 2: Create a file and commit it
-      # This step includes your email in its name, as required
-      - name: Create daily commit - 23f3000343@ds.study.iitm.ac.in
+      # This step name is now simpler, as the email is in the main name
+      - name: Create daily commit
         run: |
-          # Configure the git user for this commit
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           
-          # Create or update a file to ensure there is a change
           echo "Last automated update: $(date)" > automated_update.log
           
-          # Add the file and commit it
           git add automated_update.log
           git commit -m "Automated daily update [skip ci]"
 
-      # Step 3: Push the commit back to the repository
       - name: Push changes
         run: |
           git push
