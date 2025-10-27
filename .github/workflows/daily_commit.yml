@@ -1,5 +1,5 @@
-# MODIFICATION: Email is now in the top-level workflow name
-name: Daily Commit Workflow - 23f3000343@ds.study.iitm.ac.in
+# We'll keep the name simple, as the email in the name failed.
+name: Daily Commit Workflow
 
 on:
   workflow_dispatch:
@@ -17,8 +17,8 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
-      # This step name is now simpler, as the email is in the main name
-      - name: Create daily commit
+      # This step name literally follows the prompt's instructions
+      - name: Create daily commit - 23f3000343@ds.study.iitm.ac.in
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
@@ -26,7 +26,10 @@ jobs:
           echo "Last automated update: $(date)" > automated_update.log
           
           git add automated_update.log
-          git commit -m "Automated daily update [skip ci]"
+          
+          # --- MODIFICATION IS HERE ---
+          # We will add the email to the commit message itself.
+          git commit -m "Automated daily update 23f3000343@ds.study.iitm.ac.in [skip ci]"
 
       - name: Push changes
         run: |
