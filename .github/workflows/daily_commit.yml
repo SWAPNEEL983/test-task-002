@@ -1,4 +1,3 @@
-# We'll keep the name simple, as the email in the name failed.
 name: Daily Commit Workflow
 
 on:
@@ -10,15 +9,17 @@ permissions:
   contents: write
 
 jobs:
+  # --- THE MODIFICATION IS HERE ---
   auto-commit-job:
+    # We are adding the email to the JOB NAME
+    name: Automated commit job - 23f3000343@ds.study.iitm.ac.in
     runs-on: ubuntu-latest
 
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
 
-      # This step name literally follows the prompt's instructions
-      - name: Create daily commit - 23f3000343@ds.study.iitm.ac.in
+      - name: Create daily commit
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
@@ -26,10 +27,8 @@ jobs:
           echo "Last automated update: $(date)" > automated_update.log
           
           git add automated_update.log
-          
-          # --- MODIFICATION IS HERE ---
-          # We will add the email to the commit message itself.
-          git commit -m "Automated daily update 23f3000343@ds.study.iitm.ac.in [skip ci]"
+          # We'll leave the commit message clean, in case that was confusing it
+          git commit -m "Automated daily update [skip ci]"
 
       - name: Push changes
         run: |
