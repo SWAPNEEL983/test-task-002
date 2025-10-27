@@ -1,35 +1,32 @@
-name: Daily Commit Workflow
+name: Daily DevSync Activity Commit
 
 on:
-  workflow_dispatch:
   schedule:
-    - cron: '30 5 * * *'
-
-permissions:
-  contents: write
+    # Runs at 05:30 UTC every day (uses specific hour/minute)
+    - cron: "30 5 * * *"
+  workflow_dispatch: # Allows you to manually run this workflow
 
 jobs:
-  # --- THE MODIFICATION IS HERE ---
-  auto-commit-job:
-    # We are adding the email to the JOB NAME
-    name: Automated commit job - 23f3000343@ds.study.iitm.ac.in
+  daily-commit:
     runs-on: ubuntu-latest
+    
+    # Required permissions to write to the repository
+    permissions:
+      contents: write
 
     steps:
-      - name: Check out repository
+      # Step 1: Check out the repository's code
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Create daily commit
+      # Step 2: A step that includes the required email in its name
+      - name: Log User Email 23f3000343@ds.study.iitm.ac.in
+        run: echo "Running daily activity job..."
+
+      # Step 3: Configure git and create an empty commit
+      - name: Create daily activity commit
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          
-          echo "Last automated update: $(date)" > automated_update.log
-          
-          git add automated_update.log
-          # We'll leave the commit message clean, in case that was confusing it
-          git commit -m "Automated daily update [skip ci]"
-
-      - name: Push changes
-        run: |
+          git commit --allow-empty -m "Automated daily activity commit [skip ci]"
           git push
